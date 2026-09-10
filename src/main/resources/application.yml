@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: agentic-engineering-platform
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/agentic}
+    username: ${DATABASE_USER:agentic}
+    password: ${DATABASE_PASSWORD}
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+server:
+  port: ${PORT:8080}
+  error:
+    include-message: never
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  endpoint:
+    health:
+      show-details: never
+platform:
+  workspace-root: ${WORKSPACE_ROOT:./workspaces}
+  repository-root: ${REPOSITORY_ROOT:./repositories}
+  parallelism: 4
+  max-attempts: 2
+  max-repairs: 2
+  workflow-timeout-minutes: 30
+  build-timeout-seconds: 180
+  validation-mode: ${VALIDATION_MODE:docker}
+  build-image: ${BUILD_IMAGE:gradle:8.14.5-jdk17}
+  scheduling-enabled: true
+  operator-password: ${OPERATOR_PASSWORD}
+  approver-password: ${APPROVER_PASSWORD}
+  model:
+    provider: ${MODEL_PROVIDER:demo}
+    name: ${MODEL_NAME:}
+    api-key: ${MODEL_API_KEY:}
+    endpoint: https://api.openai.com/v1/responses
