@@ -34,3 +34,15 @@ validation. A deterministic provider is explicitly an offline orchestration demo
 An optional Responses API adapter supplies actual requirement-driven generation.
 Git publishing and production deployment of generated projects remain manual.
 URL-shortener assessment scenarios are a later application-level increment.
+
+## Current delivery status
+
+Source implementation covers increments 1-5. Unit/integration test sources, CI,
+container configuration, API reference and operational documentation are included.
+Verification is pending: earlier compilation attempts failed on a local dependency
+JAR access error. The user subsequently requested no build commands and no push.
+Only source review and Git whitespace checks are permitted for this handoff.
+
+The DAG is a platform-owned lifecycle template expanded after analysis and extended
+for repairs. Model-authored arbitrary task graphs and selective downstream reuse
+are future work. Replanning currently invalidates the entire prior revision.

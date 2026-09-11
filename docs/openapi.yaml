@@ -1,0 +1,232 @@
+openapi: 3.0.3
+info:
+  title: Agentic Engineering Platform
+  version: 0.1.0
+  description: Requirements-first workflow orchestration. See api.md for state and role rules.
+servers:
+  - url: http://localhost:8080
+security:
+  - basicAuth: []
+paths:
+  /api/v1/workflows:
+    post:
+      operationId: createWorkflow
+      summary: Submit requirements with an optional local repository
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [requirements]
+              properties:
+                requirements: {type: string, minLength: 1, maxLength: 20000}
+                repository: {type: string, maxLength: 200, nullable: true}
+      responses:
+        '201': {$ref: '#/components/responses/Workflow'}
+        '400': {$ref: '#/components/responses/Problem'}
+  /api/v1/workflows/{id}:
+    parameters:
+      - {$ref: '#/components/parameters/Id'}
+    get:
+      operationId: getWorkflow
+      responses:
+        '200': {$ref: '#/components/responses/Workflow'}
+        '404': {$ref: '#/components/responses/Problem'}
+  /api/v1/workflows/{id}/summary:
+    parameters:
+      - {$ref: '#/components/parameters/Id'}
+    get:
+      operationId: getEngineeringSummary
+      responses:
+        '200':
+          description: Plan, proposed paths, validation evidence and limitations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  workflowId: {type: string, format: uuid}
+                  revision: {type: integer}
+                  status: {$ref: '#/components/schemas/Status'}
+                  requirements: {type: string}
+                  plan: {type: string}
+                  changedFiles: {type: array, items: {type: string}}
+                  validationEvidence: {type: array, items: {type: string}}
+                  limitations: {type: array, items: {type: string}}
+  /api/v1/workflows/{id}/events:
+    parameters:
+      - {$ref: '#/components/parameters/Id'}
+    get:
+      operationId: getAuditEvents
+      parameters:
+        - name: after
+          in: query
+          schema: {type: integer, format: int64, minimum: 0, default: 0}
+      responses:
+        '200':
+          description: At most 200 events in sequence order
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    sequence: {type: integer, format: int64}
+                    workflowId: {type: string, format: uuid}
+                    revision: {type: integer}
+                    type: {type: string}
+                    actor: {type: string}
+                    detail: {type: string}
+                    occurredAt: {type: string, format: date-time}
+  /api/v1/workflows/{id}/revisions:
+    parameters:
+      - {$ref: '#/components/parameters/Id'}
+    post:
+      operationId: reviseWorkflow
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [revision, requirements]
+              properties:
+                revision: {type: integer, minimum: 1}
+                requirements: {type: string, minLength: 1, maxLength: 20000}
+      responses:
+        '200': {$ref: '#/components/responses/Workflow'}
+        '409': {$ref: '#/components/responses/Problem'}
+  /api/v1/workflows/{id}/clarifications:
+    parameters:
+      - {$ref: '#/components/parameters/Id'}
+    post:
+      operationId: clarifyWorkflow
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [revision, answer]
+              properties:
+                revision: {type: integer, minimum: 1}
+                answer: {type: string, minLength: 1, maxLength: 5000}
+      responses:
+        '200': {$ref: '#/components/responses/Workflow'}
+        '409': {$ref: '#/components/responses/Problem'}
+  /api/v1/workflows/{id}/approvals:
+    parameters:
+      - {$ref: '#/components/parameters/Id'}
+    post:
+      operationId: approveWorkflow
+      summary: Approver only; checks current revision and source fingerprint
+      requestBody: {$ref: '#/components/requestBodies/Decision'}
+      responses:
+        '200': {$ref: '#/components/responses/Workflow'}
+        '409': {$ref: '#/components/responses/Problem'}
+  /api/v1/workflows/{id}/stop:
+    parameters:
+      - {$ref: '#/components/parameters/Id'}
+    post:
+      operationId: stopWorkflow
+      requestBody: {$ref: '#/components/requestBodies/Decision'}
+      responses:
+        '200': {$ref: '#/components/responses/Workflow'}
+        '409': {$ref: '#/components/responses/Problem'}
+  /api/v1/workflows/{id}/recover:
+    parameters:
+      - {$ref: '#/components/parameters/Id'}
+    post:
+      operationId: recoverWorkflow
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [revision]
+              properties:
+                revision: {type: integer, minimum: 1}
+      responses:
+        '200': {$ref: '#/components/responses/Workflow'}
+        '409': {$ref: '#/components/responses/Problem'}
+components:
+  securitySchemes:
+    basicAuth: {type: http, scheme: basic}
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      schema: {type: string, format: uuid}
+  requestBodies:
+    Decision:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required: [revision, reason]
+            properties:
+              revision: {type: integer, minimum: 1}
+              reason: {type: string, minLength: 1, maxLength: 1000}
+  responses:
+    Workflow:
+      description: Current workflow representation
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/Workflow'}
+    Problem:
+      description: Invalid input, missing resource or conflicting workflow state
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              type: {type: string}
+              title: {type: string}
+              status: {type: integer}
+              detail: {type: string}
+              instance: {type: string}
+  schemas:
+    Status:
+      type: string
+      enum: [QUEUED, RUNNING, AWAITING_CLARIFICATION, AWAITING_APPROVAL, COMPLETED, FAILED, SAFE_STOPPED]
+    Workflow:
+      type: object
+      properties:
+        id: {type: string, format: uuid}
+        revision: {type: integer, minimum: 1}
+        requirements: {type: string}
+        repository: {type: string, nullable: true}
+        status: {$ref: '#/components/schemas/Status'}
+        createdAt: {type: string, format: date-time}
+        updatedAt: {type: string, format: date-time}
+        tasks:
+          type: array
+          items:
+            type: object
+            properties:
+              id: {type: string}
+              kind:
+                type: string
+                enum: [ANALYZE, INSPECT, DESIGN, IMPLEMENT, TEST, DOCUMENT, APPLY, VALIDATE, REPAIR]
+              dependencies: {type: array, uniqueItems: true, items: {type: string}}
+              status: {type: string, enum: [PENDING, RUNNING, SUCCEEDED, FAILED]}
+              attempts: {type: integer, minimum: 0}
+              error: {type: string, nullable: true}
+              output:
+                type: object
+                nullable: true
+                properties:
+                  summary: {type: string}
+                  passed: {type: boolean}
+                  questions: {type: array, items: {type: string}}
+                  files: {type: object, additionalProperties: {type: string}}

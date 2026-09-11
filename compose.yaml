@@ -1,0 +1,36 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: agentic
+      POSTGRES_USER: agentic
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:?Set DATABASE_PASSWORD}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - platform-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U agentic -d agentic"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  demo:
+    profiles: ["demo"]
+    build: .
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      DATABASE_URL: jdbc:postgresql://postgres:5432/agentic
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:?Set DATABASE_PASSWORD}
+      OPERATOR_PASSWORD: ${OPERATOR_PASSWORD:?Set OPERATOR_PASSWORD}
+      APPROVER_PASSWORD: ${APPROVER_PASSWORD:?Set APPROVER_PASSWORD}
+      VALIDATION_MODE: demo
+      MODEL_PROVIDER: demo
+    volumes:
+      - demo-workspaces:/app/workspaces
+    depends_on:
+      postgres:
+        condition: service_healthy
+volumes:
+  platform-db:
+  demo-workspaces:
