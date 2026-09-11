@@ -37,4 +37,4 @@ platform:
     provider: ${MODEL_PROVIDER:demo}
     name: ${MODEL_NAME:}
     api-key: ${MODEL_API_KEY:}
-    endpoint: https://api.openai.com/v1/responses
+    endpoint: ${MODEL_ENDPOINT:https://api.openai.com/v1/responses}

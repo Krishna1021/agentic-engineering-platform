@@ -106,8 +106,8 @@ public class WorkflowScheduler {
                 Thread.currentThread().interrupt();
             }
             recordFailure(workflow, task, exception);
-            LOG.warn("Task failed: workflow={} revision={} task={} type={}", workflow.id(),
-                    workflow.revision(), task.id(), exception.getClass().getSimpleName());
+            LOG.warn("Task failed: workflow={} revision={} task={} type={} reason={}", workflow.id(),
+                    workflow.revision(), task.id(), exception.getClass().getSimpleName(), safeReason(exception));
         } finally {
             timer.stop(metrics.timer("platform.task.duration", "kind", task.kind().name(), "outcome", outcome));
             metrics.counter("platform.task.executions", "kind", task.kind().name(), "outcome", outcome).increment();
@@ -125,5 +125,13 @@ public class WorkflowScheduler {
             LOG.error("Could not checkpoint failure; restart recovery required: workflow={} task={} type={}",
                     workflow.id(), task.id(), persistenceFailure.getClass().getSimpleName());
         }
+    }
+
+    private static String safeReason(Exception exception) {
+        String reason = exception.getMessage();
+        if (reason == null || reason.isBlank()) {
+            return "no detail";
+        }
+        return reason.length() > 300 ? reason.substring(0, 300) : reason;
     }
 }

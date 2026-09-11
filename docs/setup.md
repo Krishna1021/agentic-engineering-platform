@@ -41,9 +41,11 @@ paths in API requests are relative to this root. Greenfield requests omit reposi
 | VALIDATION_MODE=docker | Actual offline Gradle invocation in an isolated Linux container (default) |
 | VALIDATION_MODE=demo | Explicitly records that compilation/tests were NOT executed |
 
-The model name is supplied by the operator. The adapter uses the Responses endpoint
-and requires a model supporting structured JSON-schema outputs. A live paid request
-has not been performed. Do not put credentials in source control or request bodies.
+The model name and API key are supplied by the operator through `MODEL_NAME` and
+`MODEL_API_KEY`. The adapter uses the Responses endpoint and requires a model
+supporting structured JSON-schema outputs. A live paid request has not been
+performed. Never put credentials in source control, logs, chat history or request
+bodies. Revoke any exposed key and create a replacement.
 
 For a containerized orchestration-only demo, `docker compose --profile demo up --build`
 starts PostgreSQL and the API with both demo modes. This profile does not execute

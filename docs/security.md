@@ -4,6 +4,7 @@
 - The API is stateless and intended for programmatic JSON clients. No browser session UI is provided.
 - Operator and approver are separate identities. Submission cannot approve its own outcome.
 - Requirements, repository contents and model outputs are untrusted engineering inputs.
+- Model API keys are environment-only secrets. Revoke any key that appears in source, logs or chat history.
 - Model output is structured and bounded. Only analysis can ask clarification questions.
 - Test generation writes under src/test; documentation writes Markdown under docs.
 - Proposed paths cannot escape a revision, use absolute paths, or differ only by case.
