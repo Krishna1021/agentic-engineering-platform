@@ -12,6 +12,7 @@ import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import org.junit.jupiter.api.AfterEach;
@@ -32,6 +33,7 @@ class ResponsesEngineeringModelTest {
         assertThat(model.generate(request()).summary()).isEqualTo("Design");
         assertThat(mapper.readTree(captured.get()).at("/text/format/strict").asBoolean()).isTrue();
         assertThat(mapper.readTree(captured.get()).path("store").asBoolean()).isFalse();
+        assertThat(mapper.readTree(captured.get()).path("max_output_tokens").asInt()).isEqualTo(16000);
     }
 
     @Test
@@ -52,10 +54,34 @@ class ResponsesEngineeringModelTest {
 
     @Test
     void requiresCredentialsAndModel() {
-        assertThatThrownBy(() -> new ResponsesClient(URI.create("https://api.openai.com/v1/responses"), "", ""))
+        assertThatThrownBy(() -> new ResponsesClient(URI.create("https://api.openai.com/v1/responses"), "", "", Duration.ofSeconds(60)))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
+    @Test
+    void honorsConfiguredRequestTimeout() throws Exception {
+        server = HttpServer.create(new InetSocketAddress("localhost", 0), 0);
+        server.createContext("/responses", exchange -> {
+            // Consume the request but deliberately never send a response.
+            exchange.getRequestBody().readAllBytes();
+        });
+        server.start();
+        var client = new ResponsesClient(
+                URI.create("http://localhost:" + server.getAddress().getPort() + "/responses"),
+                "test-model", "test-key", Duration.ofMillis(100));
+        assertThatThrownBy(() -> client.create("{}"))
+                .isInstanceOf(java.util.concurrent.ExecutionException.class)
+                .hasCauseInstanceOf(java.net.http.HttpTimeoutException.class);
+    }
+
+    @Test
+    void rejectsInvalidGenerationBudgets() {
+        assertThatThrownBy(() -> new ResponsesEngineeringModel(mapper, null, 0))
+                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> new ResponsesClient(URI.create("https://example.com/responses"),
+                "test-model", "test-key", Duration.ZERO))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
     private ResponsesEngineeringModel model(int status, String body) throws IOException {
         server = HttpServer.create(new InetSocketAddress("localhost", 0), 0);
         server.createContext("/responses", exchange -> {
@@ -67,7 +93,7 @@ class ResponsesEngineeringModelTest {
         });
         server.start();
         return new ResponsesEngineeringModel(mapper, new ResponsesClient(
-                URI.create("http://localhost:" + server.getAddress().getPort() + "/responses"), "test-model", "test-key"));
+                URI.create("http://localhost:" + server.getAddress().getPort() + "/responses"), "test-model", "test-key", Duration.ofSeconds(5)), 16000);
     }
 
     private String response(String status, String text) throws IOException {

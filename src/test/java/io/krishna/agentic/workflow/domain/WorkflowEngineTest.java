@@ -47,7 +47,8 @@ class WorkflowEngineTest {
     void clearRequirementsExpandTheGraph() {
         Workflow result = engine.complete(running(Task.pending("analyze", TaskKind.ANALYZE).start()),
                 "analyze", TaskOutput.note("clear"), now);
-        assertThat(result.tasks()).hasSize(9);
+        assertThat(result.tasks()).extracting(Task::id)
+                .containsExactly("analyze", "inspect", "design", "implement", "test", "document", "apply", "validate");
         assertThat(DependencyGraph.ready(result.tasks())).extracting(Task::id).containsExactly("inspect");
     }
 

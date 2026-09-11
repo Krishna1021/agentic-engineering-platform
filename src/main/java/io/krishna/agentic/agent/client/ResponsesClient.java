@@ -24,10 +24,12 @@ public class ResponsesClient {
     private final URI endpoint;
     private final String apiKey;
     private final String model;
+    private final Duration timeout;
 
     public ResponsesClient(@Value("${platform.model.endpoint}") URI endpoint,
             @Value("${platform.model.name}") String model,
-            @Value("${platform.model.api-key}") String apiKey) {
+            @Value("${platform.model.api-key}") String apiKey,
+            @Value("${platform.model.timeout:PT60S}") Duration timeout) {
         if (model.isBlank() || apiKey.isBlank()) {
             throw new IllegalArgumentException("MODEL_NAME and MODEL_API_KEY are required for openai provider");
         }
@@ -37,18 +39,22 @@ public class ResponsesClient {
         this.endpoint = endpoint;
         this.model = model;
         this.apiKey = apiKey;
+        if (timeout.isNegative() || timeout.isZero()) {
+            throw new IllegalArgumentException("Model timeout must be positive");
+        }
+        this.timeout = timeout;
         client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
     }
 
     public String model() { return model; }
 
     public byte[] create(String body) throws Exception {
-        HttpRequest request = HttpRequest.newBuilder(endpoint).timeout(Duration.ofSeconds(60))
+        HttpRequest request = HttpRequest.newBuilder(endpoint).timeout(timeout)
                 .header("Authorization", "Bearer " + apiKey).header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(body)).build();
         var future = client.sendAsync(request, response -> new LimitedBodySubscriber());
         try {
-            HttpResponse<byte[]> response = future.get(65, TimeUnit.SECONDS);
+            HttpResponse<byte[]> response = future.get(timeout.plusSeconds(5).toMillis(), TimeUnit.MILLISECONDS);
             if (response.statusCode() != 200) {
                 throw new IOException("Model request failed with HTTP " + response.statusCode());
             }

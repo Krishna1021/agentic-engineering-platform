@@ -10,6 +10,7 @@ import io.krishna.agentic.workflow.domain.Workflow;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -43,9 +44,20 @@ public class EngineeringTaskHandler {
                 context.put(completed.id(), completed.output());
             }
         }
-        TaskOutput output = model.generate(new AgentRequest(task.kind(), workflow.requirements(), context));
+        TaskOutput output = normalize(task.kind(), model.generate(new AgentRequest(task.kind(), workflow.requirements(), context)));
         policy.validate(task.kind(), output);
         return output;
+    }
+
+    private static TaskOutput normalize(TaskKind kind, TaskOutput output) {
+        boolean generatesFiles = List.of(TaskKind.IMPLEMENT, TaskKind.TEST, TaskKind.DOCUMENT,
+                TaskKind.REPAIR).contains(kind);
+        Map<String, String> files = generatesFiles ? output.files() : Map.of();
+        List<String> questions = kind == TaskKind.ANALYZE ? output.questions() : List.of();
+        if (files.equals(output.files()) && questions.equals(output.questions())) {
+            return output;
+        }
+        return new TaskOutput(output.summary(), files, questions, output.passed());
     }
 
     private static Map<String, String> proposals(Workflow workflow) {
@@ -56,7 +68,13 @@ public class EngineeringTaskHandler {
                 continue;
             }
             for (Map.Entry<String, String> file : task.output().files().entrySet()) {
+                if (task.kind() == TaskKind.IMPLEMENT && file.getKey().startsWith("src/test/")) {
+                    continue;
+                }
                 if (task.kind() != TaskKind.REPAIR && files.containsKey(file.getKey())) {
+                    if (Objects.equals(files.get(file.getKey()), file.getValue())) {
+                        continue;
+                    }
                     throw new IllegalArgumentException("Agents proposed conflicting file: " + file.getKey());
                 }
                 files.put(file.getKey(), file.getValue());

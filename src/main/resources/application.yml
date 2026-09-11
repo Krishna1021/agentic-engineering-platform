@@ -34,7 +34,10 @@ platform:
   operator-password: ${OPERATOR_PASSWORD}
   approver-password: ${APPROVER_PASSWORD}
   model:
-    provider: ${MODEL_PROVIDER:demo}
-    name: ${MODEL_NAME:}
+    provider: ${MODEL_PROVIDER:openai}
+    name: ${MODEL_NAME:gpt-4.1-mini}
+    timeout: ${MODEL_TIMEOUT:PT60S}
+    max-output-characters: ${MODEL_MAX_OUTPUT_CHARACTERS:100000}
+    max-output-tokens: ${MODEL_MAX_OUTPUT_TOKENS:8000}
     api-key: ${MODEL_API_KEY:}
     endpoint: ${MODEL_ENDPOINT:https://api.openai.com/v1/responses}

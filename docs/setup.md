@@ -71,3 +71,33 @@ does not fetch arbitrary dependencies on the worker's behalf.
 Use one orchestrator process per database. Keep the database and workspace volume
 together when backing up/restoring. A restart safe-stops interrupted active tasks;
 inspect the run and use the recovery endpoint to start a fresh revision.
+
+## URL shortener from PowerShell
+
+Start the API with `MODEL_PROVIDER=openai`, `MODEL_NAME` set to a model supporting
+structured Responses output, and `MODEL_API_KEY` set to credentials for the chosen
+endpoint. `MODEL_ENDPOINT` defaults to `https://api.openai.com/v1/responses`.
+If using another compatible provider, set its Responses endpoint and use that
+provider's API key and model name together. Restart the API after configuration changes.
+For larger generated services, `MODEL_TIMEOUT=PT180S` and
+`MODEL_MAX_OUTPUT_TOKENS=16000` can increase the generation budget if supported by
+the selected model. These settings now control the actual model request.
+
+In the client PowerShell session:
+
+```powershell
+$env:OPERATOR_PASSWORD = 'operator-password-12' # must match the API server
+./scripts/create-url-shortener.ps1
+```
+
+The script submits the URL shortener requirements, polls the asynchronous workflow,
+and displays artifacts, task errors and validation evidence. Do not paste Markdown
+quote markers (`>`), escaped underscores (`\_`) or Markdown links into PowerShell.
+The script uses parameter splatting to avoid fragile backtick line continuations.
+A 401 means the client password does not match the API server configuration.
+
+`MODEL_PROVIDER=demo` only generates the fixed scaffold. Spring Boot/PostgreSQL
+validation requires a prepared build image containing the requested dependencies:
+the Docker validator runs offline. `VALIDATION_MODE=demo` skips tests and must not
+be treated as production validation. Generated files reside below
+`WORKSPACE_ROOT/<workflow-id>/revision-<revision>/repository` after APPLY succeeds.
