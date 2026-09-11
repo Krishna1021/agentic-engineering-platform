@@ -1,0 +1,14 @@
+Patch manifest (SHA-256 before -> after):
+build.gradle: NEW -> 00796ddfc1cfae349af1582ebb338f579e1ef4f2fa9511ae87eb3eddc86de134
+src/main/java/com/example/urlshortener/config/JpaConfig.java: NEW -> 90aeb4566adb2f41ef78ae789817896b3bdf99e8eaa855981f667315a7dd87d0
+src/main/java/com/example/urlshortener/repository/UrlMappingRepository.java: NEW -> ad69ec0737e49ec709cb0b5e8578ff6c36c6bd716012b7b18c83504ee46fe5ac
+src/main/java/com/example/urlshortener/config/OpenApiConfig.java: NEW -> 704192951e4deee8de254e5d6f95ab2958aa63a3cfd9c484f5cc10f844ae9b09
+src/main/java/com/example/urlshortener/service/UrlShortenerService.java: NEW -> da3da0d5b0e0f1c8366c8114d91fb2de2a0d224c7b493d32ac0ada261dd6ff50
+src/main/java/com/example/urlshortener/controller/UrlShortenerController.java: NEW -> 33432e84547664b3fda5e69a82562ca1345676b8dbdb68daef2e5e4bd117451b
+src/main/java/com/example/urlshortener/UrlShortenerApplication.java: NEW -> f156014d548960b6d35f6f11d00ad2ec7063447d4902b6a5cfe5c37666d47d66
+src/main/java/com/example/urlshortener/entity/UrlMapping.java: NEW -> da321f060ddccb3a2469142423dfd1157ef3c9e1472684bc38805ff1598460a3
+src/main/resources/application.properties: NEW -> e21d6964ac7a21ff41d9144bf357b4a7e92a5d828b183ad0fd6bcebefc959b99
+src/main/resources/db/migration/V1__Create_urls_table.sql: NEW -> f71e6fea543d8c3259c2d26a61cde0c09ecffa1a51a96b21eb02fce69022a013
+src/test/java/com/example/urlshortener/controller/UrlShortenerControllerIntegrationTest.java: NEW -> f52579201b6776ab39ac8de36474822fe537a71f0bf324f6ed1ce4145b37245b
+src/test/java/com/example/urlshortener/service/UrlShortenerServiceTest.java: NEW -> a520f23226d97f61d3e87784c18d584e827af0523b676885d623a06f9c9dd025
+docs/README.md: NEW -> 421ab533460ed9cf1393710dcbd1e9b2a75be72fddfb224140281e92b9c039d4
