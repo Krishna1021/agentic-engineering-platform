@@ -22,7 +22,7 @@ class AgentOutputPolicyTest {
     void rejectsAttemptsToModifyProductionFromOtherRoles() {
         assertThatThrownBy(() -> policy.validate(TaskKind.TEST, output("src/main/java/Application.java")))
                 .isInstanceOf(IllegalArgumentException.class);
-        assertThatThrownBy(() -> policy.validate(TaskKind.DOCUMENT, output("build.gradle.kts")))
+        assertThatThrownBy(() -> policy.validate(TaskKind.DOCUMENT, output("build.gradle")))
                 .isInstanceOf(IllegalArgumentException.class);
         assertThatThrownBy(() -> policy.validate(TaskKind.ANALYZE, output("Application.java")))
                 .isInstanceOf(IllegalArgumentException.class);

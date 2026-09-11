@@ -27,7 +27,7 @@ class BuildValidatorTest {
         var workspaces = new WorkspaceService(properties);
         var workflow = Workflow.create("Build a Java application with tests", null, "operator", Instant.now());
         workspaces.prepare(workflow);
-        workspaces.apply(workflow, Map.of("build.gradle.kts", "plugins { java }"));
+        workspaces.apply(workflow, Map.of("build.gradle", "plugins { id 'java' }"));
         var runner = mock(ProcessRunner.class);
         when(runner.run(any(), any())).thenReturn(new BuildResult(1, false, "compiler failure"));
         var result = new BuildValidator(properties, workspaces, runner).validate(workflow);

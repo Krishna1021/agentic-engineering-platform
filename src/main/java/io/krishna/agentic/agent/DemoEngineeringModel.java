@@ -49,16 +49,16 @@ public class DemoEngineeringModel implements EngineeringModel {
 
     private static Map<String, String> scaffold() {
         return Map.of(
-                "settings.gradle.kts", "rootProject.name = \"generated-application\"\n",
-                "build.gradle.kts", """
-                plugins { java }
+                "settings.gradle", "rootProject.name = \"generated-application\"\n",
+                "build.gradle", """
+                plugins { id 'java' }
                 java { toolchain { languageVersion = JavaLanguageVersion.of(17) } }
-                val smokeTest by tasks.registering(JavaExec::class) {
+                tasks.register('smokeTest', JavaExec) {
                     dependsOn(tasks.testClasses)
-                    classpath = sourceSets.test.get().runtimeClasspath
+                    classpath = sourceSets.test.runtimeClasspath
                     mainClass = "generated.SmokeTest"
                 }
-                tasks.test { dependsOn(smokeTest) }
+                tasks.test { dependsOn('smokeTest') }
                 """,
                 "src/main/java/generated/Application.java", """
                 package generated;
