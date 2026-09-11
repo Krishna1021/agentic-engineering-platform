@@ -34,7 +34,16 @@ Validation is independently configured: `demo` explicitly skips compilation, whi
 
 ## Verification status
 
-Source and test code have been written, but **the build and tests are not verified**.
-Earlier local compilation failed because Gradle could not read a dependency JAR.
-Further builds and pushes are paused at the user's request. CI configuration is
-provided for a later authorized run; no success claim is implied by its presence.
+The earlier dependency-JAR access issue has been resolved. The cleaned platform passes **36 default tests and 1 PostgreSQL test**, and its executable JAR builds successfully. See
+[testing and captured evidence](docs/testing.md) for verification of the cleaned
+repository, including the separate PostgreSQL suite.
+
+All three URL-shortener assessment scenarios are defined in the
+[scenario catalog](scripts/scenarios.json). The [Reviewer Guide](docs/reviewer-guide.md)
+provides a cross-platform walkthrough, acceptance checks and captured historical
+outcomes. Those live runs failed after generating artifacts or requesting
+clarification; they are not successful autonomous application submissions.
+
+The demo provider remains an orchestration fixture. Actual Spring Boot/PostgreSQL
+validation uses a [prepared offline worker cache](docs/setup.md). One active
+orchestrator is supported; production deployment is outside this prototype's scope.

@@ -1,0 +1,4 @@
+{
+  "scope": "Synthetic cache fixture; copies artifacts and excludes lock/gc files. Not a populated Spring Boot cache or container validation.",
+  "result": "PASS"
+}

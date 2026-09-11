@@ -6,7 +6,7 @@ These scripts submit requirements to the existing Java platform REST API. They d
 
 Start the API using docs/setup.md with MODEL_PROVIDER=openai, a configured compatible model endpoint/key, and VALIDATION_MODE=docker. Set the client OPERATOR_PASSWORD to match the server. Use HTTPS outside localhost. Never include credentials in requirement files.
 
-Actual Spring Boot validation needs a prepared BUILD_IMAGE/dependency arrangement: the worker is offline, and its command mounts an empty tmpfs over /home/gradle/.gradle. Merely warming that directory in an image will not survive that mount. The worker must be verified with its actual mounts and commands before treating runs as validated. The default image alone is not evidence that dependencies are available. Do not switch to demo mode to claim successful validation.
+Actual Spring Boot validation needs a prepared BUILD_IMAGE/dependency arrangement: the worker is offline, and its command mounts an empty tmpfs over /home/gradle/.gradle. Merely warming that directory in an image will not survive that mount. The worker must be verified with its actual mounts and commands before treating runs as validated. See setup.md and worker/Dockerfile for a read-only cache outside that mount. The default image alone is not evidence that dependencies are available. Do not switch to demo mode to claim successful validation.
 
 The existing engine executes ANALYZE -> INSPECT -> DESIGN -> IMPLEMENT -> parallel TEST and DOCUMENT -> APPLY -> VALIDATE, with bounded repair and human approval. Prompts request behavior; they cannot add capabilities to the running engine. Platform self-improvements are generated proposals that must be independently reviewed and installed before later runs can use them.
 
@@ -90,3 +90,6 @@ $env:APPROVER_PASSWORD = 'replace-with-your-server-approver-password'
 ```
 
 These are alternative actions, not a sequence to paste together. Substitute the current revision. Revise replaces the complete requirement text. Recover starts fresh work and may incur model cost. Completed workflows require a new Start for further work. GET/summary/events collection is not a transactional snapshot; avoid concurrent human mutations while collecting final review evidence.
+
+
+For the cross-platform scenario catalog, captured historical outcomes and reviewer acceptance checklist, see reviewer-guide.md.

@@ -1,0 +1,5 @@
+{
+  "greenfield": {"requirements": "requirements/01-greenfield.md", "repositoryRequired": false},
+  "brownfield": {"requirements": "requirements/02-brownfield.md", "repositoryRequired": true},
+  "ambiguous": {"requirements": "requirements/03-ambiguous.md", "answer": "requirements/03-answer.txt", "repositoryRequired": true}
+}

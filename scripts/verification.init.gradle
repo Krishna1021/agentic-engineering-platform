@@ -1,0 +1,4 @@
+// Keep verification outputs separate from a JAR held open by a running local API.
+allprojects {
+    layout.buildDirectory = layout.projectDirectory.dir('build/verification')
+}

@@ -59,3 +59,15 @@ traces or upstream response bodies.
 The summary's changedFiles list describes proposed paths. APPLY's manifest records
 before/after hashes; task outputs retain complete proposed file contents. A failed
 or stopped run can contain unapplied proposals. This API does not claim a Git diff.
+
+## Contract review
+
+The controller's nine method/path operations, request record limits, workflow and
+summary response fields, status enums, event cursor and security roles were checked
+against this reference and openapi.yaml. Create returns 201 with a relative Location
+header. This is a source-level contract review, not a full runtime schema validator.
+
+Approval checks revision and workspace fingerprint. Demo validation can reach the
+approval state, so COMPLETED alone does not prove compilation or application
+acceptance. Review actual nonzero executed tests and scenario criteria before
+approving a submission; see reviewer-guide.md.

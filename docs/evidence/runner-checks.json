@@ -1,0 +1,35 @@
+{
+  "scope": "Local mock API checks; not live model/application evidence",
+  "results": [
+    {
+      "scenario": "greenfield",
+      "result": "PASS",
+      "checks": [
+        "request payload",
+        "repository presence",
+        "evidence persistence",
+        "no automatic approval"
+      ]
+    },
+    {
+      "scenario": "brownfield",
+      "result": "PASS",
+      "checks": [
+        "request payload",
+        "repository presence",
+        "evidence persistence",
+        "no automatic approval"
+      ]
+    },
+    {
+      "scenario": "ambiguous",
+      "result": "PASS",
+      "checks": [
+        "request payload",
+        "repository presence",
+        "evidence persistence",
+        "no automatic approval"
+      ]
+    }
+  ]
+}

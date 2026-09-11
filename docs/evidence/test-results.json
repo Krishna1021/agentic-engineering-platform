@@ -1,0 +1,368 @@
+{
+  "scope": "Cleaned platform source. All 9 Gradle tasks executed in separate build/verification output. Does not validate a generated URL-shortener application.",
+  "command": "./gradlew.bat -I scripts/verification.init.gradle check postgresTest bootJar --offline",
+  "suites": [
+    {
+      "task": "postgresTest",
+      "suite": "io.krishna.agentic.workflow.PostgresPersistenceTest",
+      "timestamp": "2026-09-11T07:20:57.623Z",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "D1BA4BDED9390E2926C08AE541ADB36E99D6CAAC4B69464F9E2F506C8829158B",
+      "testCases": [
+        "migrationSnapshotRoundTripAndRejectedTransaction()"
+      ]
+    },
+    {
+      "task": "test",
+      "suite": "io.krishna.agentic.agent.AgentOutputPolicyTest",
+      "timestamp": "2026-09-11T07:18:00.182Z",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "1AFE73AE478E3314B19AABF9BA5EBEF4EA8088A64E922838431E1021CF870968",
+      "testCases": [
+        "rejectsEmptyGenerationOversizedFilesAndLateClarification()",
+        "rejectsAttemptsToModifyProductionFromOtherRoles()",
+        "acceptsScopedTestAndDocumentationFiles()"
+      ]
+    },
+    {
+      "task": "test",
+      "suite": "io.krishna.agentic.agent.ResponsesEngineeringModelTest",
+      "timestamp": "2026-09-11T07:18:05.059Z",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "C45C8A54B4021917D123B481E9B43F31A6A3217FBD09E976184E7B1664337B13",
+      "testCases": [
+        "handlesProviderErrorsWithoutLeakingResponseBody()",
+        "rejectsInvalidGenerationBudgets()",
+        "requiresCredentialsAndModel()",
+        "usesStructuredContractAndParsesOutput()",
+        "rejectsIncompleteAndMalformedOutputs()",
+        "honorsConfiguredRequestTimeout()"
+      ]
+    },
+    {
+      "task": "test",
+      "suite": "io.krishna.agentic.config.SecurityConfigurationTest",
+      "timestamp": "2026-09-11T07:18:09.472Z",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "CD40688C2771814D02D0BE35D74E3DDF0AC6A084F32A2A7971C8385C71FE1391",
+      "testCases": [
+        "createsDelegatingEncoderCompatibleUsers()",
+        "rejectsWeakOrSharedPasswords()"
+      ]
+    },
+    {
+      "task": "test",
+      "suite": "io.krishna.agentic.execution.BuildValidatorTest",
+      "timestamp": "2026-09-11T07:18:10.907Z",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "AB5FDDE23660867CAEC7057C3D25E385CFE7DA31E4B1EEB637DFEDAB19DCA7B9",
+      "testCases": [
+        "rejectsUnknownValidationMode()",
+        "demoEvidenceExplicitlySaysTestsWereNotRun()",
+        "usesFixedIsolatedCommandAndCapturesFailure()"
+      ]
+    },
+    {
+      "task": "test",
+      "suite": "io.krishna.agentic.execution.WorkspaceServiceTest",
+      "timestamp": "2026-09-11T07:18:28.806Z",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "6C1539D878D5F1A7253330B60FB166E9095FF33A37116F4621FED56EF3683283",
+      "testCases": [
+        "rejectsOversizedProposalsAndExistingRevisions()",
+        "rejectsTraversalAbsolutePathsUnsupportedFilesAndCaseCollisions()",
+        "createsGreenfieldWorkspaceAndAppliesFiles()",
+        "repairRestoresBaselineAndKeepsOriginalRepositoryUntouched()"
+      ]
+    },
+    {
+      "task": "test",
+      "suite": "io.krishna.agentic.workflow.application.WorkflowSchedulerTest",
+      "timestamp": "2026-09-11T07:19:20.269Z",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "C38B19BBEFDC82393C631B92C857BC6CABC8583A34E7F166E490F909CA57EBDE",
+      "testCases": [
+        "executesIndependentTasksConcurrentlyWithinCapacity()"
+      ]
+    },
+    {
+      "task": "test",
+      "suite": "io.krishna.agentic.workflow.domain.WorkflowEngineTest",
+      "timestamp": "2026-09-11T07:19:23.350Z",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "1F266580048C93220BDC46BFD879D48FE35EA74F2FE1368832F297961624D0CF",
+      "testCases": [
+        "rejectsCyclesMissingDependenciesAndDuplicateIds()",
+        "retriesPureTasksButSafeStopsUncertainEffects()",
+        "rejectsBlankRequirementsAndInvalidPolicies()",
+        "validationFailureAddsRepairAndRevalidation()",
+        "exhaustedValidationBlocksApproval()",
+        "clarificationPreventsDownstreamTasks()",
+        "synchronizesIndependentBranches()",
+        "rejectsCompletionForInactiveTasks()",
+        "clearRequirementsExpandTheGraph()"
+      ]
+    },
+    {
+      "task": "test",
+      "suite": "io.krishna.agentic.workflow.WorkflowIntegrationTest",
+      "timestamp": "2026-09-11T07:19:07.845Z",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "08573EB1626F501D7C6588F6A7D1A215FE490BDF9203E53E028A46C93006A18F",
+      "testCases": [
+        "rejectsApprovalWhenSourceChangesAfterValidation()",
+        "executesRequirementsOnlyToReviewThenApprovesExactRevision()",
+        "enforcesAuthenticationRolesAndInputValidation()",
+        "restartRequiresExplicitRecoveryOfInterruptedTasks()",
+        "pausesForClarificationAndPreservesDecisionHistory()",
+        "rejectsPrematureApprovalAndRollsBackRejectedMutation()",
+        "replanningInvalidatesApprovalAndDiscardsLateTaskResults()",
+        "safeStopDiscardsInFlightOutput()"
+      ]
+    }
+  ],
+  "result": "BUILD SUCCESSFUL",
+  "java": "17",
+  "verifiedAtUtc": "2026-09-11T07:22:03.9989357Z",
+  "sourceInputs": [
+    {
+      "path": "build.gradle",
+      "sha256": "A34256F5024FF97FCDEDF5479BAB56ADC2EEDBA135F20B09B401B2128E204153"
+    },
+    {
+      "path": "scripts/verification.init.gradle",
+      "sha256": "6A9C91023B548C9CD52BCD050FF6EFC3DD30E69E26B11FFCD713CA7AD7209B6E"
+    },
+    {
+      "path": "settings.gradle",
+      "sha256": "63CBB18D290FCE3265B9BF38C0EA0B7FB27A5E6D3C439117B30309567181BDBA"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/agent/AgentOutputPolicy.java",
+      "sha256": "C760695A9EBD42ABBFD313648E6DE2AFAF801BE1C5378BD89DBE231BE41DF931"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/agent/AgentRequest.java",
+      "sha256": "922CA38FF35578CD939F10019AADFC611157839B7F1DFA4F604F38B8B8FD5F15"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/agent/client/ResponsesClient.java",
+      "sha256": "8A2B37CC80E96108D89325ABB98B48C0400C72CA9C9BCEB45ACFB1680A8989E3"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/agent/DemoEngineeringModel.java",
+      "sha256": "3AADA1B9AF08C3E7E809580EC10B6F23A2E400DBAA3920FF40D5FA56305241BF"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/agent/EngineeringModel.java",
+      "sha256": "1E147B845483D55DFC09403FD717AB812FA846AA39CAB1EDC3B5D722D9F20D8C"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/agent/ResponsesEngineeringModel.java",
+      "sha256": "07AFECBDC2E01973D7528BEC864949901F16A800FAF8D099A08FF537589DEFCF"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/config/PlatformConfiguration.java",
+      "sha256": "79EF4E4061035D5CF5C51680CBEAECB80AF8BE85E04553714FE9F67CDC8D0228"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/config/PlatformProperties.java",
+      "sha256": "28D66B120CE264D48C1B73D0A2B9DD745418A19BF2FEB416BF964511F09F0499"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/config/SecurityConfiguration.java",
+      "sha256": "8602BB9A6C6558D2A491E97C1B1EBF76F93B2212C81E751922B838FB4C60FD84"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/execution/BoundedProcessRunner.java",
+      "sha256": "3EAF62D28398F751D094934A6E344C4E25561E2707C8EA610A4512AA7415B3A9"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/execution/BuildResult.java",
+      "sha256": "249CE792B43AB713EF580675CAD1ABBE8FD4AD7299C5BBF0687AB55E8A34D178"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/execution/BuildValidator.java",
+      "sha256": "2E09325CE5E9751067169392E7C983F5A2726C9C29CE84A702A30E42327299EA"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/execution/EngineeringTaskHandler.java",
+      "sha256": "7AE7DB022E5EA276A5446E0207784C2A4B0FF75471F1467DC14E47B637B8DAA5"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/execution/ProcessRunner.java",
+      "sha256": "986185F1F4760F799512A1709E4D90A5953F32A8C6CC56045657CF2C94CF0595"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/execution/WorkspaceService.java",
+      "sha256": "DE48EFB061218E37C39AD24F5A1612BB5ACF829E0F24BBE66351C4BEE40F46E1"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/PlatformApplication.java",
+      "sha256": "5A5116C9983F3979BB54989989E5DA10997F8FE64608594FEACB412B41BA17B6"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/workflow/api/ApiExceptionHandler.java",
+      "sha256": "C78EEB6012804251693D1A370B92A523D1190E4AF1B77DB28CFA242AAD460F01"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/workflow/api/EngineeringSummary.java",
+      "sha256": "F8B47D0AE4371D0B81585D7F1B4B829B9833C205AAE63CCA31E7EE24F1FC2E3D"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/workflow/api/WorkflowController.java",
+      "sha256": "9C3CDAF03C4F9B16F8615D633A1C53438A7302700F872F000DE745112E0AB13F"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/workflow/api/WorkflowMapper.java",
+      "sha256": "674D2ABBDF2A1C152580F008261A6EFC6AD875C9710F9B37196ED8D6B4D06046"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/workflow/api/WorkflowRequests.java",
+      "sha256": "523E153020B8B8A692D036DFD5E9264F095DB1A1D4A36A9E1DF77ED17038C7B8"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/workflow/api/WorkflowResponse.java",
+      "sha256": "B1A77DA7B66101FC4AF1BAA4F535C7671A2520506A50292400655E407B34BEEC"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/workflow/application/WorkflowChanged.java",
+      "sha256": "E4DB0786B87A22D9BAEC5402AAC1A587B8E96EFB334166D55AC2D21593FC4FBF"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/workflow/application/WorkflowConflictException.java",
+      "sha256": "A620E8E7172F8527EA0FC4751E653A4D1DAD6EB7C5546750BD9BC80C7661DE17"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/workflow/application/WorkflowScheduler.java",
+      "sha256": "B222D89C9ADCE936034CD10176A7742D123433F20F01F6E684248B33A25F36F4"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/workflow/application/WorkflowService.java",
+      "sha256": "0967DE8CE6E40C226C2E17B48E6CF5BFCA8B52CCDEAD75714801D88363F5F0D9"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/workflow/application/WorkflowTelemetry.java",
+      "sha256": "B18108CBCF674A139FE4E3F9D6E4FBED1010A52DA6CD79D10AA8F00DCC64FC6E"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/workflow/domain/DependencyGraph.java",
+      "sha256": "9E9F1F81BA06B9BE01B56D8D3F3196F38CB7A3DCF0D35FFF7FF4BF23E47DB9AF"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/workflow/domain/Task.java",
+      "sha256": "40B4F5DC0ACF458AA2DA754799602ED97B0E77686AE9A4F0673512DEAA6F44E4"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/workflow/domain/TaskKind.java",
+      "sha256": "2CB550AC3F9CC662645C2783F191E803C57B2A269A2863AD4CD360DB77713878"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/workflow/domain/TaskOutput.java",
+      "sha256": "2015F38502006167300345AFFCB19C0F8C6C54F8ECFFB57774C31BFD40A23B62"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/workflow/domain/TaskStatus.java",
+      "sha256": "5A3AECCBB8EE861BBEF56880E17D216CC794315494C9103B32E4298235EC630F"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/workflow/domain/Workflow.java",
+      "sha256": "7A7BEDE8F18952674C357C27DFC302DAD3225A045E267422813C93A3C44B06B0"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/workflow/domain/WorkflowEngine.java",
+      "sha256": "1B810291E1077B093DA77F8C7D3E6B4AEF3B9297284EE445C03DB112818C45BD"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/workflow/domain/WorkflowStatus.java",
+      "sha256": "4866D88013562C2CE9085137E0DE49C6F81D219320AC391AE8FF4617E2094720"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/workflow/persistence/AuditEvent.java",
+      "sha256": "5E1D0D667109E50CC413D12BA89D60E9E6FA5D9FAC3E5739BE4D0EE85F112D88"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/workflow/persistence/WorkflowNotFoundException.java",
+      "sha256": "2012F6CB8F73B949B3A69E404BE41650A25934D61F26B4429BAAF35C05BD561E"
+    },
+    {
+      "path": "src/main/java/io/krishna/agentic/workflow/persistence/WorkflowStore.java",
+      "sha256": "6D2AA0B95BA63D20131D12CF07C0C485B9C387B8EDDB5F04CA9F3D7E62D88A6D"
+    },
+    {
+      "path": "src/main/resources/application.yml",
+      "sha256": "3D7370AFD7E53C38B75BB0DCD43B8A29D900F07584C0535835291C753E933E83"
+    },
+    {
+      "path": "src/main/resources/db/migration/V1__workflow_state.sql",
+      "sha256": "BE2F18C79150B6E9206764087FEE243BC39B62F911448EE0F543EC538E99D376"
+    },
+    {
+      "path": "src/test/java/io/krishna/agentic/agent/AgentOutputPolicyTest.java",
+      "sha256": "D6E1B9AB17904788776519B4C052ABD5432FC812A4B173C2F2F280A45E16FDD1"
+    },
+    {
+      "path": "src/test/java/io/krishna/agentic/agent/ResponsesEngineeringModelTest.java",
+      "sha256": "3D47684282B76D3482BEAD130AB6E6DCF340F005A92A0B51C8720772ACA62DB0"
+    },
+    {
+      "path": "src/test/java/io/krishna/agentic/config/SecurityConfigurationTest.java",
+      "sha256": "408AF921F9273C82AC82DEF298B590A30A8BD6FD8B72139CB044697C51E2D7F4"
+    },
+    {
+      "path": "src/test/java/io/krishna/agentic/execution/BuildValidatorTest.java",
+      "sha256": "3A39C4FAC2731EB3C2FC4C5EFFC855F166340E8762BF0F8562B444B3C11E6569"
+    },
+    {
+      "path": "src/test/java/io/krishna/agentic/execution/WorkspaceServiceTest.java",
+      "sha256": "AA65040A091B4D944A12C3E2C568405917FF44B5F12AD205C6212FAD396B686A"
+    },
+    {
+      "path": "src/test/java/io/krishna/agentic/workflow/application/WorkflowSchedulerTest.java",
+      "sha256": "F5DE6C46D966CDF233510FDD3F8B63E34A09F99B7A9969F38D7D8972980DA8E8"
+    },
+    {
+      "path": "src/test/java/io/krishna/agentic/workflow/domain/WorkflowEngineTest.java",
+      "sha256": "30FF8554981E9715F56EA9785A431C673DE02FC99D42BC1BDA843F151DB19961"
+    },
+    {
+      "path": "src/test/java/io/krishna/agentic/workflow/PostgresPersistenceTest.java",
+      "sha256": "BE927D283A123669EF9D88DE6DE437FFE359969BA6CD76AE79E74E211A9E1A01"
+    },
+    {
+      "path": "src/test/java/io/krishna/agentic/workflow/WorkflowIntegrationTest.java",
+      "sha256": "10C7474F818DEA2D8DA703309FC4389E003E92C4C3DF2585C707CA34311CB3B0"
+    },
+    {
+      "path": "src/test/resources/application-test.yml",
+      "sha256": "17009EF4EDA25F99A0E3D9819A67D8596FA610D88651C1772D5212A960231E34"
+    }
+  ]
+}

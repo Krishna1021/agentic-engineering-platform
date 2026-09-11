@@ -24,7 +24,15 @@ paths:
                 requirements: {type: string, minLength: 1, maxLength: 20000}
                 repository: {type: string, maxLength: 200, nullable: true}
       responses:
-        '201': {$ref: '#/components/responses/Workflow'}
+        '201':
+          description: Workflow created; execution is asynchronous
+          headers:
+            Location:
+              description: Relative URL of the created workflow
+              schema: {type: string}
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Workflow'}
         '400': {$ref: '#/components/responses/Problem'}
   /api/v1/workflows/{id}:
     parameters:

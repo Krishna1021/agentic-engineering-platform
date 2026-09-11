@@ -2,10 +2,32 @@
 
 ## Current status
 
-No successful compilation or test execution is claimed. Two earlier build attempts
-failed when the local runtime could not read a Spring Boot dependency JAR. The user
-then explicitly requested no build commands and no pushes. Subsequent checks are
-source inspection and Git whitespace checks only.
+The dependency-JAR access issue is resolved. On September 11, 2026, the cleaned
+platform passed **36 default tests and 1 real PostgreSQL integration test**, with
+zero failures, errors or skips. Compilation and bootJar also passed. All nine
+Gradle tasks executed against the current source; no previous test result was reused.
+
+The initial clean command encountered a JAR locked by the running API. Verification
+then used a fresh, separate output directory without stopping or changing that API:
+
+```text
+./gradlew.bat -I scripts/verification.init.gradle check postgresTest bootJar --offline
+```
+
+Use ./gradlew on Linux/macOS. Reports from this run are under
+build/verification/reports/tests and build/verification/reports/jacoco/test.
+[Captured evidence](evidence/test-results.json) includes the command, suite counts,
+test names, report SHA-256 hashes and source-input hashes. The report artifact is
+stored separately from disposable build output.
+
+The portable scenario runner passed three local mock-API checks for request payloads,
+repository selection, saved evidence and absence of automatic approvals. The
+clarification payload preview also passed. The cache preparation script passed a
+synthetic copy/filter check. See runner-checks.json and cache-check.json in evidence/.
+These checks do not validate a live model or a populated worker dependency image.
+
+Platform tests verify orchestration, not a generated application's acceptance.
+Historical live scenario observations are in evidence/scenario-observations.md.
 
 ## Test sources included
 
@@ -24,7 +46,7 @@ source inspection and Git whitespace checks only.
 H2 provides a lightweight integration test database in PostgreSQL compatibility mode;
 it does not replace the PostgreSQL-specific suite. Testcontainers requires Docker.
 
-When builds are authorized, the intended commands are:
+Verification commands:
 
 ```text
 ./gradlew clean check
@@ -37,8 +59,8 @@ image. It has not been triggered by this implementation.
 
 ## Remaining verification work
 
-- Compile all sources and resolve any compiler findings.
-- Execute unit and integration suites on Java 17.
+- Repeat platform verification after source changes.
+- Complete application-level acceptance for all three assessment scenarios.
 - Exercise actual Docker validation, timeout cleanup and filesystem permissions.
 - Exercise the optional live model provider with explicitly supplied credentials.
 - Review generated application quality separately from orchestration fixture behavior.

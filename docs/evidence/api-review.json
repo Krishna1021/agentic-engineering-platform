@@ -1,0 +1,15 @@
+{
+  "scope": "Source-level controller route inventory and manual request/response/role review; not full runtime schema validation",
+  "result": "PASS",
+  "operations": [
+    "POST /api/v1/workflows",
+    "GET /api/v1/workflows/{id}",
+    "GET /api/v1/workflows/{id}/events",
+    "GET /api/v1/workflows/{id}/summary",
+    "POST /api/v1/workflows/{id}/revisions",
+    "POST /api/v1/workflows/{id}/clarifications",
+    "POST /api/v1/workflows/{id}/approvals",
+    "POST /api/v1/workflows/{id}/stop",
+    "POST /api/v1/workflows/{id}/recover"
+  ]
+}

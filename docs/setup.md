@@ -7,8 +7,7 @@
 - Docker Engine with Linux containers for real generated-code validation.
 - Gradle Wrapper is committed; a global Gradle installation is unnecessary.
 
-The following commands are instructions for a future authorized run. They have not
-been run successfully for this handoff, and should not be interpreted as verification.
+See testing.md for current platform verification and reviewer-guide.md for scenario outcomes.
 
 ## Local configuration
 
@@ -43,8 +42,7 @@ paths in API requests are relative to this root. Greenfield requests omit reposi
 
 The model name and API key are supplied by the operator through `MODEL_NAME` and
 `MODEL_API_KEY`. The adapter uses the Responses endpoint and requires a model
-supporting structured JSON-schema outputs. A live paid request has not been
-performed. Never put credentials in source control, logs, chat history or request
+supporting structured JSON-schema outputs. Historical live requests produced artifacts and failures; see reviewer-guide.md. Never put credentials in source control, logs, chat history or request
 bodies. Revoke any exposed key and create a replacement.
 
 For a containerized orchestration-only demo, `docker compose --profile demo up --build`
@@ -101,3 +99,46 @@ validation requires a prepared build image containing the requested dependencies
 the Docker validator runs offline. `VALIDATION_MODE=demo` skips tests and must not
 be treated as production validation. Generated files reside below
 `WORKSPACE_ROOT/<workflow-id>/revision-<revision>/repository` after APPLY succeeds.
+
+## Dependency-cache worker
+
+The supplied worker/Dockerfile reads dependencies from /opt/gradle-readonly using
+GRADLE_RO_DEP_CACHE. This is outside /home/gradle/.gradle, so the validator's empty
+writable tmpfs does not hide the prepared dependencies.
+
+Prepare the target project's dependencies with Gradle 8.14.5 on a trusted machine
+that has network access. Run its default test suite and any separately selected
+PostgreSQL suite on the host. Stop Gradle daemons before copying the cache. Copy
+only the resulting caches/modules-2 tree to build/worker-context/cache/modules-2,
+excluding *.lock and gc.properties. Do not include Gradle properties, init scripts
+or credentials. The portable preparation script copies only modules-2, excludes
+lock/GC files and symlinks, and refuses to mix with an existing cache context:
+
+```sh
+node scripts/prepare-worker-cache.mjs /trusted/gradle-home/caches/modules-2
+```
+
+On Windows pass the quoted full path to your Gradle cache. If the preparation fails,
+inspect its partial context and use a fresh context for the next attempt. Then run
+from this checkout:
+
+```sh
+docker build -f worker/Dockerfile -t agentic-worker:dependency-cache build/worker-context
+```
+
+Set BUILD_IMAGE=agentic-worker:dependency-cache and VALIDATION_MODE=docker on the
+API, then restart it. The image is specific to the cached plugins/dependency
+versions. A new dependency requires rebuilding the cache; offline workers do not
+fetch arbitrary packages. Validate with the actual Docker mounts and restrictions
+before claiming the image supports a target application. Default generated tests
+must avoid nested Docker; run real PostgreSQL tests separately on the host.
+
+## Cross-platform assessment walkthrough
+
+Use Node.js 18+ and scripts/run-scenario.mjs on Windows, Linux or macOS. The
+[Reviewer Guide](reviewer-guide.md) covers all three scenarios, baseline staging,
+clarification, evidence capture and manual acceptance. The existing PowerShell
+runner remains available for Watch, Revise, Stop, Recover and explicit approval.
+
+
+If a running API locks build/libs during clean, use the isolated verification command in testing.md. Its output is build/verification; it does not replace the running JAR.
