@@ -12,7 +12,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Comparator;
 import java.util.HexFormat;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -137,11 +139,11 @@ public class WorkspaceService {
             throw new IllegalArgumentException("Proposal must contain 1 to " + MAX_FILES + " files");
         }
         int bytes = 0;
-        Set<String> foldedPaths = new java.util.HashSet<>();
+        Set<String> foldedPaths = new HashSet<>();
         for (Map.Entry<String, String> file : proposals.entrySet()) {
             String path = file.getKey();
             if (!path.matches("[a-zA-Z0-9_-]+(?:[./][a-zA-Z0-9_-]+)*") || path.contains("..")
-                    || !allowed(path) || !foldedPaths.add(path.toLowerCase(java.util.Locale.ROOT))) {
+                    || !allowed(path) || !foldedPaths.add(path.toLowerCase(Locale.ROOT))) {
                 throw new IllegalArgumentException("Unsupported or duplicate proposal path: " + path);
             }
             int size = file.getValue().getBytes(StandardCharsets.UTF_8).length;

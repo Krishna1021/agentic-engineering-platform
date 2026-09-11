@@ -3,12 +3,14 @@ package io.krishna.agentic.workflow.persistence;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.krishna.agentic.workflow.domain.Workflow;
+import io.krishna.agentic.workflow.application.WorkflowChanged;
 import java.sql.Timestamp;
 import java.time.Clock;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.UnaryOperator;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,11 +19,13 @@ public class WorkflowStore {
     private final JdbcTemplate jdbc;
     private final ObjectMapper mapper;
     private final Clock clock;
+    private final ApplicationEventPublisher events;
 
-    public WorkflowStore(JdbcTemplate jdbc, ObjectMapper mapper, Clock clock) {
+    public WorkflowStore(JdbcTemplate jdbc, ObjectMapper mapper, Clock clock, ApplicationEventPublisher events) {
         this.jdbc = jdbc;
         this.mapper = mapper;
         this.clock = clock;
+        this.events = events;
     }
 
     @Transactional
@@ -29,6 +33,7 @@ public class WorkflowStore {
         jdbc.update("INSERT INTO workflows (id, status, snapshot) VALUES (?, ?, ?)",
                 workflow.id(), workflow.status().name(), encode(workflow));
         audit(workflow, "CREATED", workflow.createdBy(), "Requirements submitted");
+        events.publishEvent(new WorkflowChanged(null, workflow, "CREATED"));
         return workflow;
     }
 
@@ -46,11 +51,17 @@ public class WorkflowStore {
         jdbc.update("UPDATE workflows SET status = ?, snapshot = ? WHERE id = ?",
                 updated.status().name(), encode(updated), id);
         audit(updated, type, actor, detail);
+        events.publishEvent(new WorkflowChanged(current, updated, type));
         return updated;
     }
 
     public List<UUID> runnableIds() {
         return jdbc.query("SELECT id FROM workflows WHERE status IN ('QUEUED', 'RUNNING') ORDER BY id LIMIT 100",
+                (row, index) -> row.getObject("id", UUID.class));
+    }
+
+    public List<UUID> inProgressIds() {
+        return jdbc.query("SELECT id FROM workflows WHERE status = 'RUNNING'",
                 (row, index) -> row.getObject("id", UUID.class));
     }
 

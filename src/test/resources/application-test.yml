@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:platform;MODE=PostgreSQL;DB_CLOSE_DELAY=-1
+    username: sa
+    password: test
+platform:
+  scheduling-enabled: false
+  workspace-root: ./build/test-workspaces
+  repository-root: ./build/test-repositories
+  validation-mode: demo
+  operator-password: operator-test-password
+  approver-password: approver-test-password
+  model:
+    provider: demo
