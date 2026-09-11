@@ -1,0 +1,9 @@
+Improve the supplied agentic engineering platform's validation and release-readiness gates. Preserve its existing REST API, Java 17, Groovy Gradle, role separation, revision fencing, offline Docker isolation and bounded execution. Work only on this increment, not unrelated platform redesign.
+
+Implement structured validation evidence containing validation mode, build outcome, discovered/executed/failed/skipped test counts, report provenance and source fingerprint. A successful process exit with zero discovered or executed tests must not qualify as actual validation. Do not let model-provided passed flags replace validator-owned evidence. Demo mode must remain explicitly distinguishable and must not qualify for verified release readiness.
+
+Require the exact validated revision and source fingerprint at approval, with an explicit release-readiness result. Record acceptance-criteria coverage and unresolved blockers without claiming that generated tests independently prove all requirements. Preserve historical workflow readability when extending persisted records and API responses. Update OpenAPI and documentation where supported.
+
+Add meaningful tests for successful real report parsing, missing reports, malformed reports, zero tests, failed/skipped-only tests, failed build, timeout, demo evidence, changed source, stale approval, and backwards-compatible persisted data. Treat reports from generated builds as untrusted: bound parsing and disable external XML entities. Exercise actual container timeout cleanup where the environment supports it, otherwise document the missing evidence.
+
+Keep network isolation and dependency restrictions intact. Document the prepared worker dependency requirement and separate real PostgreSQL tests from offline tests. Provide plan/rationale, tests actually run, risks, assumptions, migration impacts and limitations. Do not publish, deploy, or auto-approve.
