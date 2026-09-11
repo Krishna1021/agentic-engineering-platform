@@ -44,9 +44,9 @@ class WorkflowSchedulerTest {
         when(store.runnableIds()).thenReturn(List.of(workflow.id()));
         when(store.inProgressIds()).thenReturn(List.of());
         when(store.get(workflow.id())).thenReturn(workflow);
-        when(service.claim(eq(workflow.id()), anyInt())).thenReturn(
-                List.of(new WorkflowService.TaskClaim(workflow, tests)),
-                List.of(new WorkflowService.TaskClaim(workflow, docs)));
+        when(service.claim(eq(workflow.id()), anyInt()))
+                .thenReturn(List.of(new WorkflowService.TaskClaim(workflow, tests)))
+                .thenReturn(List.of(new WorkflowService.TaskClaim(workflow, docs)));
         when(handler.execute(any(), any())).thenAnswer(invocation -> {
             entered.countDown();
             if (!release.await(5, TimeUnit.SECONDS)) { throw new IllegalStateException("Test timed out"); }
