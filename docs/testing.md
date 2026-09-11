@@ -15,6 +15,7 @@ source inspection and Git whitespace checks only.
 | WorkspaceServiceTest | Greenfield creation, baseline restoration, traversal, size limits and case collisions |
 | AgentOutputPolicyTest | Role permissions, empty generation and oversized outputs |
 | ResponsesEngineeringModelTest | Local mock HTTP contract, upstream failures, malformed/incomplete responses |
+| SecurityConfigurationTest | BCrypt credential prefixes, role users and password policy |
 | BuildValidatorTest | Fixed Docker controls, failure evidence and explicit demo validation |
 | WorkflowIntegrationTest | H2-backed lifecycle, approvals, revisions, recovery, stale results and API authorization |
 | WorkflowSchedulerTest | Concurrent independent tasks and executor capacity |

@@ -23,8 +23,10 @@ public class SecurityConfiguration {
         }
         var encoder = new BCryptPasswordEncoder();
         return new InMemoryUserDetailsManager(
-                User.withUsername("operator").password(encoder.encode(operatorPassword)).roles("OPERATOR").build(),
-                User.withUsername("approver").password(encoder.encode(approverPassword)).roles("APPROVER").build());
+                User.withUsername("operator").password("{bcrypt}" + encoder.encode(operatorPassword))
+                        .roles("OPERATOR").build(),
+                User.withUsername("approver").password("{bcrypt}" + encoder.encode(approverPassword))
+                        .roles("APPROVER").build());
     }
 
     @Bean
